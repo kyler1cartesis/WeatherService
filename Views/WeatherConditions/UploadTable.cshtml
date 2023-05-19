@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewData["Title"] = "UploadTable";
+    Layout = "_Layout";
+}
+
+<h1>Загрузить Таблицу</h1>
+
+<nav>
+     <form asp-controller="WeatherConditions" asp-action="UploadTable" enctype="multipart/form-data">
+        <input type="file" class="form-control" name="files" multiple required/>
+        <button type="submit" class="btn btn-primary">Upload</button>
+     </form>
+</nav>
+@if (ViewBag.Error is not null) {
+    <h4 class="alert-danger rounded">An error occured while processing!</h4>
+    <div class="alert-dark">@ViewBag.ErrorType: @ViewBag.Error</div>
+    ViewBag.Error = ViewBag.ErrorType = null;
+}
+<a asp-controller="Home">Вернуться на главную</a>

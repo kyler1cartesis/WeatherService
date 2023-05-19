@@ -1,0 +1,117 @@
+﻿@model ViewModel;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Web.Common;
+@{
+    ViewData["Title"] = "Index";
+}
+<link href="/css/PagedList.css" rel="stylesheet" />
+
+<a asp-controller="Home">Вернуться на главную</a>
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>*@
+@using (Html.BeginForm(FormMethod.Get)) {
+    <fieldset>
+    <label class="control-label">Месяц</label>
+    @Html.DropDownListFor(m => m.SelectedMonth, Html.GetEnumSelectList<WeatherService_DynamicSun.Models.Months>(), null,
+                    htmlAttributes: new { @class = "form-control" })
+    <label class="control-label">Год</label>
+    @Html.DropDownListFor(m => m.SelectedYear, WeatherService_DynamicSun.Models.ViewModel.Years, null,
+                    htmlAttributes: new { @class = "form-control" })
+    <button type="submit" class="btn btn-primary">Выбрать</button>
+    </fieldset>
+}
+@Html.ActionLink("Сбросить фильтры", "Index", new { SelectedYear = 0, SelectedMonth = Months.все, PageIndex = 1 })
+@Html.PagedListPager(Model.CurrentPageData, page => Url.Action("Index", new { PageIndex = page }), new PagedListRenderOptions { FunctionToDisplayEachPageNumber = page => ((page - 1) * Model.CurrentPageData.PageSize + 1).ToString() + "-" + (((page - 1) * Model.CurrentPageData.PageSize) + Model.CurrentPageData.PageSize).ToString(), MaximumPageNumbersToDisplay = 5 })
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstItem.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstItem.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstItem.TemperatureAir)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstItem.RelativeHumidity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstItem.DewPoint)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstItem.AtmosphericPressure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstItem.WindDirection)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstItem.WindSpeed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstItem.CloudCover)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstItem.LowerCloudLimit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstItem.HorizontalVisibility)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstItem.WeatherPhenomena)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (WeatherConditions item in Model.CurrentPageData) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TemperatureAir)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RelativeHumidity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DewPoint)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AtmosphericPressure)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WindDirection)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WindSpeed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CloudCover)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LowerCloudLimit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HorizontalVisibility)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WeatherPhenomena)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@Html.PagedListPager(Model.CurrentPageData, page => Url.Action("Index", new { PageIndex = page }), new PagedListRenderOptions { FunctionToDisplayEachPageNumber = page => ((page - 1) * Model.CurrentPageData.PageSize + 1).ToString() + "-" + (((page - 1) * Model.CurrentPageData.PageSize) + Model.CurrentPageData.PageSize).ToString(), MaximumPageNumbersToDisplay = 5 })
